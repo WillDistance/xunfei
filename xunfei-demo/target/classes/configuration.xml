@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="GBK"?>
+<system>
+    <category name="system" description="系统配置">
+    	<item name="machineId" value="wenxin" descript="机器ID，方便发布时的开发调试" />
+    	<item name="isOracleSequence" value="1" description="使用oracle生成序列" />
+        <item name="configDataImpl" value="com.thinkive.framework.service.SysConfigService" description="系统配置信息数据来源实现类，实现类需要继承ConfigDataSource"/>
+        <item name="filterPwdField" value="password|password2|newPassword|oldPassword|idno|id_no" description="敏感字段不在日志中输出，多个字段用|分隔"/>
+        <item name="filterLogFuncNo" value="900010|901031|900100|901092|901020" description="指定的功能号不打印日志，多个功能号用|分隔"/>
+        <item name="nolog_inout_keys"
+			value="password,password2,oldpassword,newpassword,mobile_phone,page_content"
+			description="日志中不能打印的字段" />
+        <item name="moduleXMLList" value="workframe-plat.xml|workframe.xml" description="业务功能号配置文件，多个用|分隔"></item>
+        <item name="isDevelop" value="1" description="是否开发环境 0或空:不是 1:是"></item>
+        <item name="publishEncode" value="UTF-8" description="发布模板的页面编码"></item>
+        <item name="execSqlMode" value="bus" description="执行SQL配置文件模式  jdbc、bus 默认是jdbc"></item>
+        <item name="isreve" value="1" description=""></item>
+        <item name="isUseOnlineUser" value="1" description="是否使用在线用户功能 0为空：不使用 1:使用"></item>
+        <item name="mybatisConfigList" value="mybatis_config.xml|mybatis_plat_config.xml|mybatis_config_interview.xml" description="配置mybatis资源文件，多个用|分隔"></item>
+        <item name="fileSaveAddr" value="D:\develop\workspace\thinkive-hn1-CJSC-web\src\main\webapp\mall\views\article" description="模板备份文件存放的路径，可以是CMS服务器的任何地址，如e:\upload_file"></item>
+        <item name="isParamFormatHtml" value="0" description="配置后台数据存入数据库是否需要转义"></item>
+    </category>
+    <category name="bus2jsonConfig" description="统一接入相关配置">
+    	<item name="nolog_param_funcno" value="900010" descript="结果不在日志中打印的功能号,多个用|分隔" />
+    	<item name="nolog_result_funcno" value="900010" descript="入参不在日志中打印的功能号,多个用|分隔" />
+    </category>
+    
+    <category name="XunfeiConfig" description="讯飞文字转语音相关配置">
+    	<item name="appid" value="5d0d8fb7" descript="讯飞APPID" />
+    	<item name="converurl" value="D:\develop\workspace\xunfei-demo" descript="音频文件存储路径,默认 项目根目录+/WebRoot/upload/" />
+    </category>
+</system>
