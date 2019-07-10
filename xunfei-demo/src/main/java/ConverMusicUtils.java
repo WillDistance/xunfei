@@ -1,4 +1,4 @@
-
+package com.thinkive.utils;
 
 import it.sauronsoftware.jave.AudioAttributes;
 import it.sauronsoftware.jave.AudioUtils;
@@ -26,6 +26,7 @@ import com.thinkive.base.jdbc.DataRow;
 import com.thinkive.base.util.DateHelper;
 import com.thinkive.base.util.StringHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 public class ConverMusicUtils
 {
@@ -60,7 +61,7 @@ public class ConverMusicUtils
                 + "答：（1）对手方最优价格申报，以申报进入交易主机时集中申报簿中对手方队列的最优价格为其申报价格。投资者以该方式进行委托，会以对手方最优的价格作为投资者的申报价格。例如，您为买方，以该方式委托买入时，会以当时集中申报薄中卖方最优的价格作为您的买入申报价，通常为卖一的价格。"
                 + "（2）本方最优价格申报，以申报进入交易主机时集中申报簿中本方队列的最优价格为其申报价格。投资者以该方式进行委托，会以本方最优的价格作为投资者的申报价格。例如，您为买方，以该方式委托买入时，会以当时集中申报薄中买方最优的价格作为您的买入申报价，通常为买一的价格。"
                 +""; 
-        String floder ="/upload/"+ DateHelper.formatDate(new Date(), "yyyyMMdd");
+        String floder = DateHelper.formatDate(new Date(), "yyyyMMdd");
         String filename = DateHelper.formatDateTime(new Date());
         ConverMusicUtils cmu = new ConverMusicUtils();
         DataRow param1 = new DataRow();
@@ -180,26 +181,43 @@ public class ConverMusicUtils
             else
             {
                 logger.error("传入合成语音参数字符串为空");
-                if(errorFunc != null)
-                {
-                    Method method = errorFunc.getMethod();
-                    Class executeClass = errorFunc.getExecuteClass();
-                    method.invoke(executeClass.newInstance(), errorFunc.getMethodParams());
-                }
+                errorProcessor();
             }
         }
         catch (Exception e)
         {
             logger.error("合成语音文件失败",e);
+            errorProcessor();
         }
         return resultStr;
     }
     
+    /**
+     * 
+     * @描述：合成异常处理
+     * @作者：严磊
+     * @时间：2019年7月10日 下午5:51:34
+     */
+    public void errorProcessor(){
+        if(errorFunc != null)
+        {
+            try
+            {
+                Method method = errorFunc.getMethod();
+                Class executeClass = errorFunc.getExecuteClass();
+                method.invoke(executeClass.newInstance(), errorFunc.getMethodParams());
+            }
+            catch (Exception e1)
+            {
+                logger.error("改变文章合成音频状态为失败出错", e1);
+            }
+        }
+    }
     
     public String initTextConverMusic(String content,String floder,String filename) throws Exception
     {
         SpeechUtility.createUtility("appid=" + APPID);
-        floder = CONVERURL + floder;
+        floder = CONVERURL +"/"+ floder;
         File file = new File(floder);
         if ( !file.exists() )
         {
@@ -208,7 +226,7 @@ public class ConverMusicUtils
         String filePath = floder + "/" + filename + ".pcm";
         content = StringHelper.clearHtml(content);
         Synthesize(content, filePath);
-        return floder + "/" + filename + ".wav";//".mp3";
+        return floder + "/" + filename + ".wav";
     }
     
     
@@ -302,21 +320,25 @@ public class ConverMusicUtils
                         else
                         {
                             logger.error(filename + ".wav不存在");
+                            errorProcessor();
                         }
                     }
                     else
                     {
                         logger.error(uri+"不存在");
+                        errorProcessor();
                     }
                 }
                 catch (Exception e)
                 {
-                    logger.error("pcm格式文件转mp3出错", e);
+                    logger.error("pcm格式文件转mp3出错");
+                    errorProcessor();
                 }
             }
             else
             {
-                logger.info("*************转pcm音频出错，错误码：" + error.getErrorCode() + "*************");
+                logger.error("*************转pcm音频出错，错误码：" + error.getErrorCode() + "*************");
+                errorProcessor();
             }
                 
         }
