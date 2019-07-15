@@ -6,3 +6,8 @@ jdk1.8(必须是jdk1.8 不然报错) eclipse
 讯飞开放平台有demo可以下载
 
 本项目sdk版本中pcm文件转MP3，在Linux环境无法合成。所以屏蔽了转MP3的代码。（百度都是要在Linux装一个啥插件）
+
+
+# 参考
+讯飞msc开发指南
+https://wenku.baidu.com/view/20c019df04a1b0717fd5dd4b.html?rec_flag=default&sxts=1563157015727
